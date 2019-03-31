@@ -1,3 +1,5 @@
+_navbar.html.erb  下書き
+
 <header>
   <nav class="navbar navbar-inverse navbar-static-top">
     <div class="container">
@@ -14,14 +16,13 @@
         <ul class="nav navbar-nav navbar-right">
           <% if logged_in? %>
             <li><%= link_to 'Users', users_path %></li>
+            <li><%= link_to  '新規タスクの作成', new_task_path %></li>
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><%= current_user.name %> <span class="caret"></span></a>
               <ul class="dropdown-menu">
                 <li><%= link_to 'My profile', user_path(current_user) %></li>
                 <li role="separator" class="divider"></li>
                 <li><%= link_to 'Logout', logout_path, method: :delete %></li>
-              </ul>
-            </li>
           <% else %>
             <li><%= link_to 'Signup', signup_path %></li>
             <li><%= link_to 'Login', login_path %></li>
@@ -31,3 +32,20 @@
     </div>
   </nav>
 </header>
+
+
+
+routes.rb  下書き
+
+Rails.application.routes.draw do
+  root to: 'toppages#index'
+  root to: 'tasks#index'
+  get 'login', to: 'sessions#new'
+  post 'login', to: 'sessions#create'
+  delete 'logout', to: 'sessions#destroy'
+  get 'signup', to: 'users#new'
+
+  resources :users, only: [:index, :show, :new, :create]
+  resources :tasks
+end
+
